@@ -1,0 +1,387 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sign in to Hitachi Fridge",
+        "description": "Enter your Hitachi Refrigerator account credentials. Paired refrigerators will be discovered automatically, and session tokens will be renewed automatically whenever needed.",
+        "data": {
+          "email": "Email address",
+          "password": "Password",
+          "fridge_ip": "Static refrigerator LAN IP (optional)"
+        },
+        "data_description": {
+          "email": "The email address (Hitachi ID) used in the Hitachi Fridge mobile app.",
+          "password": "Your Hitachi Fridge account password.",
+          "fridge_ip": "Leave blank to discover the refrigerator automatically over Local UDP port 50000, or enter a static IPv4 address if Home Assistant is on a routed VLAN."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Reauthenticate Hitachi Fridge",
+        "description": "Please re-enter the password for your Hitachi Fridge account ({email}).",
+        "data": {
+          "email": "Email address",
+          "password": "Password"
+        }
+      },
+      "reconfigure": {
+        "title": "Update Hitachi Fridge Credentials",
+        "description": "Update your Hitachi Fridge account credentials and refresh paired appliance keys.",
+        "data": {
+          "email": "Email address",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to connect to Hitachi Cloud servers. Please check your internet connection and try again.",
+      "invalid_auth": "Invalid Hitachi email address or password.",
+      "terms_not_accepted": "Please sign in once using the official Hitachi Fridge mobile app to accept the Terms of Use, then try again.",
+      "no_devices_found": "No paired Hitachi refrigerators were found on this account.",
+      "invalid_ip": "Please enter a valid IPv4 address or leave the field blank.",
+      "unknown": "Unexpected error occurred during sign-in."
+    },
+    "abort": {
+      "already_configured": "This Hitachi Fridge account is already configured.",
+      "reauth_successful": "Reauthentication was successful.",
+      "reconfigure_successful": "Configuration updated successfully.",
+      "unique_id_mismatch": "The entered credentials belong to a different Hitachi account."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Hitachi Fridge Options",
+        "description": "Configure Local LAN UDP and Cloud fallback polling intervals, or set a static LAN IP override.",
+        "data": {
+          "local_scan_interval": "Local LAN UDP polling interval",
+          "cloud_scan_interval": "Cloud fallback polling interval",
+          "fridge_ip": "Static refrigerator LAN IP (optional)"
+        },
+        "data_description": {
+          "local_scan_interval": "Polling interval in seconds when the refrigerator is reachable directly over Local UDP port 50000 (default: 5s).",
+          "cloud_scan_interval": "Polling interval in seconds when falling back to Hitachi Cloud HTTPS (default: 60s).",
+          "fridge_ip": "Leave blank to use automatic UDP broadcast discovery."
+        }
+      }
+    },
+    "error": {
+      "invalid_ip": "Please enter a valid IPv4 address or leave the field blank."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "door_opens_today": {
+        "name": "Door opens today"
+      },
+      "door_opens_yesterday": {
+        "name": "Door opens yesterday"
+      },
+      "refrigerator_door_open_duration_today": {
+        "name": "Refrigerator compartment door open duration today"
+      },
+      "drawer_door_open_duration_today": {
+        "name": "Drawer door open duration today"
+      },
+      "refrigerator_door_open_duration_yesterday": {
+        "name": "Refrigerator compartment door open duration yesterday"
+      },
+      "drawer_door_open_duration_yesterday": {
+        "name": "Drawer door open duration yesterday"
+      },
+      "selectable_zone_mode": {
+        "name": "Selectable zone mode",
+        "state": {
+          "freezer": "Freezer (-18 to -20 °C)",
+          "soft_freeze": "Soft Freeze (-3 °C)",
+          "chill_meat": "Chill / Meat (1 °C)",
+          "refrigerator": "Refrigerator (3 °C)"
+        }
+      },
+      "upper_switch_room_mode": {
+        "name": "Upper selectable compartment mode",
+        "state": {
+          "refrigerator_chilled_veg": "Refrigerator / Chilled / Vegetable",
+          "freezer_soft_freeze": "Freezer"
+        }
+      },
+      "lower_switch_room_mode": {
+        "name": "Lower selectable compartment mode",
+        "state": {
+          "refrigerator_chilled_veg": "Refrigerator / Chilled / Vegetable",
+          "freezer_soft_freeze": "Freezer"
+        }
+      },
+      "temperature_control_mode": {
+        "name": "Temperature adjustment mode",
+        "state": {
+          "normal": "Normal (3-step)",
+          "fine": "Fine adjustment"
+        }
+      },
+      "error_code": {
+        "name": "Error code"
+      },
+      "info_code": {
+        "name": "Notification code"
+      },
+      "connection_transport": {
+        "name": "Connection transport",
+        "state": {
+          "local_udp": "Local LAN UDP",
+          "cloud_http": "Hitachi Cloud"
+        }
+      },
+      "cumulative_drive_time": {
+        "name": "Cumulative operating counter"
+      },
+      "appliance_clock": {
+        "name": "Appliance clock"
+      }
+    },
+    "binary_sensor": {
+      "door_open": {
+        "name": "Door"
+      },
+      "water_tank_empty": {
+        "name": "Water supply low"
+      },
+      "alert_active": {
+        "name": "Alert"
+      },
+      "ice_making_active": {
+        "name": "Ice making"
+      },
+      "ice_maker_cleaning": {
+        "name": "Ice maker cleaning"
+      },
+      "rapid_ice_status_active": {
+        "name": "Rapid ice making in progress"
+      },
+      "quick_cooling_active": {
+        "name": "Quick cooling in progress"
+      },
+      "spot_cooling_active": {
+        "name": "Spot cooling in progress"
+      },
+      "quick_freezing_active": {
+        "name": "Quick freezing in progress"
+      },
+      "selectable_zone_switching": {
+        "name": "Selectable zone switching"
+      },
+      "upper_switch_room_switching": {
+        "name": "Upper compartment switching"
+      },
+      "lower_switch_room_switching": {
+        "name": "Lower compartment switching"
+      },
+      "electric_drawer": {
+        "name": "Auto door / electric drawer"
+      },
+      "eco_operation_active": {
+        "name": "Energy saving operation"
+      },
+      "under_maintenance": {
+        "name": "Under maintenance"
+      }
+    },
+    "select": {
+      "refrigerator_temperature": {
+        "name": "Refrigerator temperature",
+        "state": {
+          "coldest": "Coldest",
+          "mid": "Mid",
+          "cold": "Cold",
+          "step_9_coldest": "9 (Coldest)",
+          "step_8": "8",
+          "step_7": "7",
+          "step_6": "6",
+          "step_5_mid": "5 (Mid)",
+          "step_4": "4",
+          "step_3": "3",
+          "step_2": "2",
+          "step_1_cold": "1 (Cold)",
+          "high": "High",
+          "low": "Low",
+          "step_11": "11 (Coldest)",
+          "step_10_high": "10 (High)",
+          "step_9": "9",
+          "step_6_mid": "6 (Mid)",
+          "step_5": "5",
+          "step_2_low": "2 (Low)",
+          "step_1": "1 (Warmest)"
+        }
+      },
+      "freezer_temperature": {
+        "name": "Freezer temperature",
+        "state": {
+          "coldest": "Coldest",
+          "mid": "Mid",
+          "cold": "Cold",
+          "step_9_coldest": "9 (Coldest)",
+          "step_8": "8",
+          "step_7": "7",
+          "step_6": "6",
+          "step_5_mid": "5 (Mid)",
+          "step_4": "4",
+          "step_3": "3",
+          "step_2": "2",
+          "step_1_cold": "1 (Cold)",
+          "high": "High",
+          "low": "Low",
+          "step_11": "11 (Coldest)",
+          "step_10_high": "10 (High)",
+          "step_9": "9",
+          "step_6_mid": "6 (Mid)",
+          "step_5": "5",
+          "step_2_low": "2 (Low)",
+          "step_1": "1 (Warmest)"
+        }
+      },
+      "upper_switch_room_temperature": {
+        "name": "Upper selectable compartment temperature",
+        "state": {
+          "high": "High",
+          "mid": "Mid",
+          "low": "Low",
+          "step_11": "11 (Coldest)",
+          "step_10_high": "10 (High)",
+          "step_9": "9",
+          "step_8": "8",
+          "step_7": "7",
+          "step_6": "6",
+          "step_6_mid": "6 (Mid)",
+          "step_5": "5",
+          "step_4": "4",
+          "step_3": "3",
+          "step_2": "2",
+          "step_2_low": "2 (Low)",
+          "step_1": "1 (Warmest)",
+          "coldest": "Coldest",
+          "cold": "Cold",
+          "step_9_coldest": "9 (Coldest)",
+          "step_5_mid": "5 (Mid)",
+          "step_1_cold": "1 (Cold)"
+        }
+      },
+      "lower_switch_room_temperature": {
+        "name": "Lower selectable compartment temperature",
+        "state": {
+          "high": "High",
+          "mid": "Mid",
+          "low": "Low",
+          "step_11": "11 (Coldest)",
+          "step_10_high": "10 (High)",
+          "step_9": "9",
+          "step_8": "8",
+          "step_7": "7",
+          "step_6": "6",
+          "step_6_mid": "6 (Mid)",
+          "step_5": "5",
+          "step_4": "4",
+          "step_3": "3",
+          "step_2": "2",
+          "step_2_low": "2 (Low)",
+          "step_1": "1 (Warmest)",
+          "coldest": "Coldest",
+          "cold": "Cold",
+          "step_9_coldest": "9 (Coldest)",
+          "step_5_mid": "5 (Mid)",
+          "step_1_cold": "1 (Cold)"
+        }
+      },
+      "vacuum_compartment": {
+        "name": "Vacuum compartment",
+        "state": {
+          "off": "Off",
+          "sub_zero": "Sub Zero (-1 °C)",
+          "chilled": "Chilled (+1 °C)"
+        }
+      },
+      "ice_maker_mode": {
+        "name": "Ice maker",
+        "state": {
+          "off": "Off",
+          "on": "On (Auto)",
+          "quick_ice_making": "Quick Ice Making"
+        }
+      },
+      "door_alarm_volume": {
+        "name": "Door alarm volume",
+        "state": {
+          "off": "Off",
+          "mid": "Mid (Standard)",
+          "max": "Max (Loud)"
+        }
+      }
+    },
+    "switch": {
+      "energy_saver": {
+        "name": "Energy saver"
+      },
+      "ice_maker": {
+        "name": "Ice maker"
+      },
+      "vacuum_compartment_switch": {
+        "name": "Vacuum compartment"
+      },
+      "quick_cooling": {
+        "name": "Quick cooling"
+      },
+      "quick_freezing": {
+        "name": "Quick freezing"
+      },
+      "spot_cooling": {
+        "name": "Spot cooling"
+      },
+      "speed_cooling": {
+        "name": "Speed cooling"
+      },
+      "vegetable_compartment": {
+        "name": "Vegetable compartment"
+      },
+      "control_lock": {
+        "name": "Control panel lock"
+      },
+      "firmware_auto_update": {
+        "name": "Automatic firmware update"
+      },
+      "push_notify_ice_and_operation": {
+        "name": "App notification: ice maker cleaning complete"
+      },
+      "push_notify_door_and_alert": {
+        "name": "App notification: doors opened"
+      },
+      "push_notify_cooling_complete": {
+        "name": "App notification: foreign particles in ice tray"
+      },
+      "push_notify_upper_compartment": {
+        "name": "App notification: upper drawer temp setting complete"
+      },
+      "push_notify_lower_compartment": {
+        "name": "App notification: lower drawer temp setting complete"
+      },
+      "push_notify_quick_mode": {
+        "name": "App notification: selectable zone setting complete"
+      }
+    },
+    "button": {
+      "refresh_status": {
+        "name": "Refresh status"
+      },
+      "rediscover_local_ip": {
+        "name": "Rediscover local LAN IP"
+      }
+    },
+    "text": {
+      "appliance_nickname": {
+        "name": "Appliance nickname"
+      }
+    },
+    "update": {
+      "firmware": {
+        "name": "Firmware"
+      }
+    }
+  }
+}
